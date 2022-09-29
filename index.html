@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="key.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="app.js" defer></script>
+    <title>Password Generator</title>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Anek+Malayalam&family=Finlandica&display=swap');
+     :root {
+        --black-color: #000;
+        --white-color: #fff;
+    }
+    
+    * {
+        margin: 0;
+        padding: 0;
+        transition: .5s ease;
+        box-sizing: border-box;
+        font-family: 'Finlandica', sans-serif;
+    }
+    
+    body {
+        background-color: var(--black-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    
+    main {
+        margin: 1rem;
+        padding: 1.5rem;
+        border-radius: 6px;
+        background-color: var(--white-color);
+    }
+    
+    section {
+        padding: .3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    img {
+        margin: .4rem;
+    }
+    
+    h1 {
+        margin: .4rem;
+    }
+    
+    hr {
+        margin: .5rem;
+        height: 1px;
+        width: 100%;
+    }
+    
+    .includesymbols {
+        display: inline-block;
+    }
+    
+    .input {
+        padding: .3rem;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin: .5rem;
+    }
+    
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: space-between;
+    }
+    
+    button {
+        margin: 1rem;
+        font-size: 1rem;
+        border-radius: 5px;
+        color: var(--white-color);
+        background-color: rgb(20, 20, 20);
+        border: none;
+        padding: .7rem;
+        cursor: pointer;
+        transition: none;
+    }
+    
+    button:active {
+        transition: none;
+        background-color: var(--black-color);
+    }
+    
+    .output {
+        position: relative;
+        border-radius: 5px;
+        margin: 1rem;
+        font-size: 1rem;
+        padding: .5rem;
+        text-align: center;
+        background-color: rgb(191, 191, 191);
+        color: var(--black-color)
+    }
+    
+    select {
+        width: 20%;
+    }
+    
+    svg {
+        cursor: pointer;
+        position: absolute;
+        top: 8%;
+        right: 7px;
+        width: 25px;
+    }
+</style>
+
+<body>
+    <main>
+        <section>
+            <div class="img-div">
+                <img src="key.png" alt="KEY LOGO">
+            </div>
+            <div class="h1-div">
+                <h1>Password Generator</h1>
+            </div>
+        </section>
+        <hr>
+        <div class="container">
+
+            <div class="input">
+                <label for="length">Password Length:</label>
+                <select name="length" id="length">
+                    <optgroup label="Weak">
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </optgroup>
+                    <optgroup label="Strong">
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="input below">
+                <label for="symbols">Include Symbols:</label>
+                <input type="checkbox" name="symbols" id="symbol">
+                <!-- <span>(e.g. @#$%)</span> -->
+            </div>
+
+            <div class="input">
+                <label for="Numbers">Include Numbers:</label>
+                <input type="checkbox" name="Numbers" id="number">
+                <!-- <span>(e.g. 123456)</span> -->
+            </div>
+
+            <div class="input">
+                <label for="Lowercase">Include Lowercase Charcters:</label>
+                <input type="checkbox" name="Lowercase" id="lowercase">
+                <!-- <span>(e.g. abcd)</span> -->
+            </div>
+            <div class="input">
+                <label for="Uppercase">Include Uppercase Charcters:</label>
+                <input type="checkbox" name="Uppercase" id="uppercase">
+                <!-- <span>(e.g. ABCD)</span> -->
+            </div>
+            <button type="submit" id="generatebutton">Generate Password</button>
+            <div class="output">
+                <span id="password">Password Appear Here</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" id="copy">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                      </svg>
+            </div>
+
+        </div>
+    </main>
+    <script>
+        //DOM Elements
+        const passwordLengthEl = document.getElementById('length')
+        const symbolEl = document.getElementById('symbol')
+        const numberEl = document.getElementById('number')
+        const lowerCaseEl = document.getElementById('lowercase')
+        const upperCaseEl = document.getElementById('uppercase')
+        const passwordTxtEL = document.getElementById('password')
+        const generateButton = document.getElementById('generatebutton')
+
+        //Objects of functions and his keys
+        const randomFunc = {
+            lower: generateLowercase,
+            upper: generateUppercase,
+            number: generateNumber,
+            symbol: generateSymbol
+        }
+
+        //Copy to clipboard function
+        document.getElementById('copy').addEventListener('click', function() {
+            const textArea = document.createElement('textarea')
+            const password = passwordTxtEL.textContent
+
+            if (!password) {
+                return ''
+            }
+            textArea.value = password
+            document.body.appendChild(textArea)
+            textArea.select()
+            document.execCommand('copy')
+            textArea.remove()
+            alert("Copied to Clipboard!")
+        })
+
+        //Adding Event listner to password generated button gives generated password
+        generateButton.addEventListener('click', function() {
+            //Grabbing the password length value but this is in a string we need to convert in a number so i added a plus sign(+) after, you can multiply with 1 also 
+            const length = +passwordLengthEl.value //Converting length value(string) to a number
+            const hasLower = lowerCaseEl.checked //checking all checkbox values true or not(false)
+            const hasUpper = upperCaseEl.checked
+            const hasNumber = numberEl.checked
+            const hasSymbol = symbolEl.checked
+
+            //Giving true or false and password length values to a function
+            passwordTxtEL.textContent = generatePassword(hasLower, hasUpper, hasNumber, hasSymbol, length) //ex - (false, true,true,false) 
+        })
+
+
+        //Function for creating Password giving check box values(true or false) and length value(number)
+        function generatePassword(lower, upper, number, symbol, length) {
+            //empty string for password
+            let generatedPassword = ''
+
+            //adding all true or false values in typescount (true + true + true + false = 3)
+            const typescount = lower + upper + number + symbol
+
+            //creating a object for stroing true false values in a array and also filtering the array if any false values are in a array
+            const typesArr = [{
+                lower
+            }, {
+                upper
+            }, {
+                number
+            }, {
+                symbol
+            }].filter(item => Object.values(item)[0])
+
+            //if no boxes are checked means all are false that means types count are equals to 0
+            if (typescount === 0) {
+                //return error
+                return 'Select any one check box'
+            }
+
+            //for loop for creating the password in a loop but here we are incrementing by typescount(checked boxes)
+            for (let i = 0; i < length; i += typescount) {
+                typesArr.forEach(type => {
+                    const funcName = Object.keys(type)[0]
+                    generatedPassword += randomFunc[funcName]()
+                })
+            }
+
+            //slicing the string by password lenght
+            const finalPass = generatedPassword.slice(0, length)
+            return finalPass
+        }
+
+
+        //Generator functions
+
+        //https://net-comber.com/charset.html ASCII VALUES
+
+        function generateLowercase() {
+            //according to charset lower case if from 97 to 122, So total alphabet is 26 
+            //Math.random generates between 0-1(not 1) and we multiply 26 highes value we get is 25 and we add to 97 (25+97 = 122)
+            return String.fromCharCode(Math.floor(Math.random() * 26 + 97))
+        }
+
+        function generateUppercase() {
+            return String.fromCharCode(Math.floor(Math.random() * 26 + 65))
+        }
+
+        function generateNumber() {
+            return String.fromCharCode(Math.floor(Math.random() * 10 + 48))
+        }
+
+        function generateSymbol() {
+            const symbols = '!@#$%^&*(){}[]=<>/,.'
+            return symbols[Math.floor(Math.random() * symbols.length)]
+        }
+    </script>
+</body>
+
+</html>
